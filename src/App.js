@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import Todoform from "./components/Todoform";
+import Todolist from "./components/Todolist";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    let [ItemInfo, setItemInfo] = useState([])
+
+    function addNewItem (newItem) {
+        setItemInfo(prevItemInfo => ([
+                ...prevItemInfo,
+                newItem
+        ]))
+    }
+
+    function checkItem (id) {
+        setItemInfo(ItemInfo.map((item) => {
+            if (item.id === id) {
+                item.comped = !item.comped;
+            }
+
+            return item
+        }))
+    }
+
+    function deleteItem (id) {
+        setItemInfo(ItemInfo.filter(item => item.id !== id));
+    }
+
+    return (
+        <div>
+            <Todoform handleClick={addNewItem}/>
+            <Todolist ItemInfo={ItemInfo} checkItem={checkItem} deleteItem={deleteItem}/>
+        </div>
+    );
 }
 
 export default App;
